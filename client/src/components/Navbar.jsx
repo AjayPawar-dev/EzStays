@@ -26,29 +26,31 @@ const Navbar = () => {
     const location = useLocation()
 
     useEffect(() => {
-
-        if(location.pathname !== '/'){
-            setIsScrolled(true);
-            return;
-        }else{
-            setIsScrolled(false);
-        }
-
-        setIsScrolled(prev => location.pathname !== '/' ? true:prev);
-
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 10);
+            if (location.pathname !== '/') {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(window.scrollY > 10);
+            }
         };
+
+        // Initialize state based on current path
+        handleScroll();
+
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    }, [location.pathname]); // 👈 Added dependency to catch page transitions
 
     return (
         <nav className={`fixed top-0 left-0 w-full flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 ${isScrolled ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4" : "py-4 md:py-6"}`}>
 
             {/* Logo */}
             <Link to='/'>
-                <img src={assets.logo3} alt="lgo" className={`h-9 ${isScrolled && "invert-opacity-80"}`}/>
+                <img 
+                    src={assets.logo3} 
+                    alt="logo" 
+                    className={`h-9 transition-all duration-300 ${isScrolled ? "brightness-0 opacity-80" : ""}`} // 👈 Dynamic filter
+                />
             </Link>
 
             {/* Desktop Nav */}
@@ -91,12 +93,12 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="flex items-center gap-3 md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <div className="flex items-center gap-3 md:hidden">
                 {user && <UserButton>
-                <UserButton.MenuItems>
-                    <UserButton.Action label="My Bookings" labelIcon={<BookIcon />} onClick={() => navigate('/my-bookings')} />
-                </UserButton.MenuItems>
-            </UserButton>}
+                    <UserButton.MenuItems>
+                        <UserButton.Action label="My Bookings" labelIcon={<BookIcon />} onClick={() => navigate('/my-bookings')} />
+                    </UserButton.MenuItems>
+                </UserButton>}
 
                 <img onClick={()=>setIsMenuOpen(!isMenuOpen)} src={assets.menuIcon} alt="menu" className={`${isScrolled && 'invert'} h-4 cursor-pointer`}/>
             </div>
