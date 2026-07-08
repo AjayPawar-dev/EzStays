@@ -1,13 +1,15 @@
 import React from 'react'
 import Navbar from './components/Navbar'
-import { Route,Routes,useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Footer from './components/Footer'
 import AllRooms from './pages/AllRooms'
-const App = () =>{
+import RoomDetails from './pages/RoomDetails'
 
+const App = () => {
 
-  const isOwnerPath=useLocation().pathname.includes("owner"); //the path which contains "owner" 
+  const isOwnerPath = useLocation().pathname.includes("owner"); 
+
   return (
     <div>
       {!isOwnerPath && <Navbar/>} 
@@ -15,6 +17,7 @@ const App = () =>{
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/rooms' element={<AllRooms/>}/>
+          <Route path='/rooms/:id' element={<RoomDetails/>}/>
         </Routes>
       </div>
       <Footer/>
