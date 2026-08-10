@@ -48,8 +48,6 @@ const AllRooms = () => {
         <div className='flex flex-col-reverse lg:flex-row items-start justify-between pt-28 md:pt-35 px-4 md:px-16 lg:px-24 xl:px-32'>
 
             <div>
-
-
                 {/* Page Header Area */}
                 <div className='flex flex-col items-start text-left'>
                     <h1 className='font-playfair text-4xl md:text-[40px]'>Hotel Rooms</h1>
@@ -134,8 +132,6 @@ const AllRooms = () => {
                     </div>
                 </div>
             </div>
-
-
         </div>
     )
 }
