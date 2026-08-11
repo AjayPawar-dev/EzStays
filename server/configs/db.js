@@ -1,34 +1,13 @@
 import mongoose from "mongoose";
 
-let cached = global.mongoose;
+const connectDB = async()=>{//asyncrhronous function to connect to mongodb
+    try{                        //event
+        mongoose.connection.on('connected', ()=>console.log("Database Connected")); //whenever we are connected to the db we will print the message db connected
+        await mongoose.connect(`${process.env.MONGODB_URI}/hotel-booking`)//to acess the env variable where our monogodb uri is stored
+    } catch(error){// if any error occur in the try block we simply return the error in the console
 
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
-const connectDB = async () => {
-  if (cached.conn) {
-    return cached.conn;
-  }
-
-  if (!cached.promise) {
-    if (!process.env.MONGODB_URI) {
-      throw new Error("MONGODB_URI is missing.");
+        console.log(error.message);
     }
-
-    cached.promise = mongoose.connect(process.env.MONGODB_URI, {
-      bufferCommands: false,
-    }).then((mongoose) => mongoose);
-  }
-
-  try {
-    cached.conn = await cached.promise;
-  } catch (e) {
-    cached.promise = null;
-    throw e;
-  }
-
-  return cached.conn;
-};
+}
 
 export default connectDB;
